@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- Coding by CodingLab | www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket Lists !</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <h2>Registration/Login</h2>
+        <form method="POST" action="{% url 'registration' %}">
+            {% csrf_token %}
+            <div class="input-box">
+                <input type="text" name="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Enter your Password" required>
+            </div>
+            <div class="input-box button">
+                <input type="submit" value="Register/Login">
+            </div>
+        </form>
+        
+    </div>
+    <script>
+        function showAlert() {
+            alert("Incorrect Password");
+        }
+        
+    </script>
+     {% if show_alert %}
+     <script>
+         showAlert();  // Call the JavaScript function to show the alert
+     </script>
+     {% endif %}
+</body>
+</html>

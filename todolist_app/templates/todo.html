@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket Lists !</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4070f4;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #4070f4;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .clear-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px; /* Spacing above the button */
+        }
+
+        .clear-button:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+
+        .add-task-form {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .add-task-form input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            flex: 1;
+        }
+
+        .add-task-form button {
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bucket Lists !</h1>
+
+        <!-- Task form -->
+        <form method="POST" class="add-task-form" action="{% url 'add' %}">
+            {% csrf_token %}
+            <input type="text" name="task_name" placeholder="Enter a new task" required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <!-- Task list -->
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Task</th>
+                    <th>Status</th>
+                    <th>Completed</th> <!-- New column for checkbox -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.2 }}</td> <!-- Task name -->
+                    <td>{{ task.3 }}</td> <!-- Status -->
+                      <!--Status-->
+                    <td>
+                        <form method="POST" action="{% url 'complete_task' task.0 %}"> <!-- Assuming task.0 is ID -->
+                            {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; cursor: pointer;">
+                        <i class="bi bi-trash" style="font-size: 20px; color: red;"></i> <!-- Bootstrap trash icon -->
+                    </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No tasks available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Clear Button -->
+        <form method="POST" action="{% url 'clear_tasks' %}"> <!-- Update the URL accordingly -->
+            {% csrf_token %}
+            <button type="submit" class="clear-button">Clear All Tasks</button>
+        </form>
+    </div>
+</body>
+</html>
